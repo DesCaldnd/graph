@@ -46,8 +46,10 @@ if(CMAKE_BUILD_TYPE MATCHES "Release")
     set(RELEASE_EXECUTABLE WIN32)
 endif()
 
+set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/appico.rc")
 add_executable(graph ${RELEASE_EXECUTABLE} main.cpp
         mainwindow.cpp mainwindow.h mainwindow.ui
+        ${APP_ICON_RESOURCE_WINDOWS}
         )
 
 

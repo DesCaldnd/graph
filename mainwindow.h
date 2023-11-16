@@ -32,12 +32,13 @@ public slots:
     void changed_x_min(double val);
     void changed_y_max(double val);
     void changed_y_min(double val);
-    void changed_precision(double val);
+    void changed_sections(int val);
     void prompt_changed(QString string);
 
 private:
     vector expr_vector;
-    double x_max = 1, x_min = -1, y_max = 1, y_min = -1, precision = 0.01;
+    double x_max = 1, x_min = -1, y_max = 1, y_min = -1;
+    int sections = 200;
     std::string prompt;
     Ui::MainWindow *ui;
     QVector<QVector<double>> data, x_data;

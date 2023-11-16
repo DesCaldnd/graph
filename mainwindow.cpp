@@ -13,16 +13,18 @@ MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setWindowTitle("Graph");
 
     connect(ui->box_x_max, &QDoubleSpinBox::valueChanged, this, &MainWindow::changed_x_max);
     connect(ui->box_x_min, &QDoubleSpinBox::valueChanged, this, &MainWindow::changed_x_min);
     connect(ui->box_y_max, &QDoubleSpinBox::valueChanged, this, &MainWindow::changed_y_max);
     connect(ui->box_y_min, &QDoubleSpinBox::valueChanged, this, &MainWindow::changed_y_min);
-    connect(ui->box_precision, &QDoubleSpinBox::valueChanged, this, &MainWindow::changed_precision);
+    connect(ui->box_sections, &QSpinBox::valueChanged, this, &MainWindow::changed_sections);
     connect(ui->line_expression, &QLineEdit::textEdited, this, &MainWindow::prompt_changed);
 
     ui->widget_graph->xAxis->setRange(x_min, x_max);
     ui->widget_graph->yAxis->setRange(y_min, y_max);
+    ui->statusbar->hide();
 }
 
 MainWindow::~MainWindow()
@@ -71,9 +73,9 @@ void MainWindow::changed_y_min(double val)
     }
 }
 
-void MainWindow::changed_precision(double val)
+void MainWindow::changed_sections(int val)
 {
-    precision = val;
+    sections = val;
     plot();
 }
 
@@ -119,6 +121,7 @@ void MainWindow::prepare_data()
     data.push_back(QVector<double>());
     x_data.clear();
     x_data.push_back(QVector<double>());
+    double precision = (x_max - x_min) / sections;
 
     while (x < x_max)
     {
