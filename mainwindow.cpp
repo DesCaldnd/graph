@@ -57,6 +57,7 @@ void MainWindow::changed_y_max(double val)
     {
         y_max = val;
         ui->widget_graph->yAxis->setRange(y_min, y_max);
+        ui->widget_graph->replot();
     }
 }
 
@@ -66,6 +67,7 @@ void MainWindow::changed_y_min(double val)
     {
         y_min = val;
         ui->widget_graph->yAxis->setRange(y_min, y_max);
+        ui->widget_graph->replot();
     }
 }
 
@@ -79,7 +81,10 @@ void MainWindow::plot()
 {
     expr_vector = expression_to_postfix(prompt.data());
     if (!vector_is_valid(expr_vector))
+    {
+        clear();
         return;
+    }
 
     prepare_data();
     for (int i = ui->widget_graph->graphCount() - 1; i >= data.size(); --i)
@@ -133,4 +138,19 @@ void MainWindow::prepare_data()
         }
         x += precision;
     }
+    if (need_new)
+    {
+        double val = calculate_expression(expr_vector, x);
+        if (val != NAN && val != INFINITY && val != -INFINITY)
+        {
+            x_data[vec_index].push_back(x);
+            data[vec_index].push_back(val);
+        }
+    }
+}
+
+void MainWindow::clear()
+{
+        ui->widget_graph->clearGraphs();
+        ui->widget_graph->replot();
 }

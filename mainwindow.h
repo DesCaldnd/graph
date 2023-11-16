@@ -44,6 +44,7 @@ private:
 
     void plot();
     void prepare_data();
+    void clear();
 };
 
 
